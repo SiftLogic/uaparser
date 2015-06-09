@@ -13,27 +13,27 @@ make_proplist(undefined, UserAgent, Type) ->
 make_proplist(OperatingSystem, UserAgent, os) ->
     {Version, Details} = get_version(OperatingSystem, UserAgent),
     [
-        {name,                  proplists:get_value(<<"name">>, OperatingSystem)},
-        {family,                proplists:get_value(<<"family">>, OperatingSystem)},
-        {manufacturer,          proplists:get_value(<<"manufacturer">>, OperatingSystem)},
-        {type,                  proplists:get_value(<<"device_type">>, OperatingSystem)},
+        {name,                  uaparser_utils:keyget(<<"name">>, OperatingSystem)},
+        {family,                uaparser_utils:keyget(<<"family">>, OperatingSystem)},
+        {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, OperatingSystem)},
+        {type,                  uaparser_utils:keyget(<<"device_type">>, OperatingSystem)},
         {version,               Version},
         {version_details,       Details}
     ];
 make_proplist(Browser, UserAgent, browser) ->
     {Version, Details} = get_version(Browser, UserAgent),
     [
-        {name,                  proplists:get_value(<<"name">>, Browser)},
-        {family,                proplists:get_value(<<"family">>, Browser)},
-        {manufacturer,          proplists:get_value(<<"manufacturer">>, Browser)},
-        {type,                  proplists:get_value(<<"browser_type">>, Browser)},
-        {renderer,              proplists:get_value(<<"rendering_engine">>, Browser)},
+        {name,                  uaparser_utils:keyget(<<"name">>, Browser)},
+        {family,                uaparser_utils:keyget(<<"family">>, Browser)},
+        {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, Browser)},
+        {type,                  uaparser_utils:keyget(<<"browser_type">>, Browser)},
+        {renderer,              uaparser_utils:keyget(<<"rendering_engine">>, Browser)},
         {version,               Version},
         {version_details,       Details}
     ].
 
 get_version(Item, UserAgent) ->
-    case proplists:get_value(<<"version_regex">>, Item) of
+    case uaparser_utils:keyget(<<"version_regex">>, Item) of
         undefined ->
             {<<"0">>, []};
         RX ->
@@ -78,11 +78,11 @@ find(_UserAgent, []) ->
 
 -spec check_useragent(Item :: tuple(), UserAgent :: binary()) -> 'undefined' | list().
 check_useragent({Item}, UserAgent) ->
-    case contains(proplists:get_value(<<"aliases">>, Item), UserAgent) of
+    case contains(uaparser_utils:keyget(<<"aliases">>, Item), UserAgent) of
         true ->
-            case find(UserAgent, proplists:get_value(<<"children">>, Item)) of
+            case find(UserAgent, uaparser_utils:keyget(<<"children">>, Item)) of
                 undefined ->
-                    case contains(proplists:get_value(<<"exclusions">>, Item), UserAgent) of
+                    case contains(uaparser_utils:keyget(<<"exclusions">>, Item), UserAgent) of
                         true -> undefined;
                         false -> Item
                     end;
@@ -103,9 +103,9 @@ contains(undefined, _Binary) ->
 
 
 inherit(Child, Parent) ->
-    case proplists:get_value(<<"version_regex">>, Child) of
+    case uaparser_utils:keyget(<<"version_regex">>, Child) of
         undefined ->
-            [{<<"version_regex">>, proplists:get_value(<<"version_regex">>, Parent)} | Child];
+            [{<<"version_regex">>, uaparser_utils:keyget(<<"version_regex">>, Parent)} | Child];
         _ ->
             Child
     end.

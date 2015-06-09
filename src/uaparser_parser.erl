@@ -1,3 +1,8 @@
+%%  Copyright (C) SiftLogic LLC- All Rights Reserved
+%%  Unauthorized copying of this file, via any medium is strictly prohibited
+%%  Proprietary and confidential
+%%  Written by Kyle Neal <kyle@verias.com>, June 2015
+
 -module(uaparser_parser).
 -compile({parse_transform, ct_expand}).
 -include("uaparser.hrl").
@@ -13,23 +18,23 @@ make_proplist(undefined, UserAgent, Type) ->
 make_proplist(OperatingSystem, UserAgent, os) ->
     {Version, Details} = get_version(OperatingSystem, UserAgent),
     [
-        {name,                  uaparser_utils:keyget(<<"name">>, OperatingSystem)},
-        {family,                uaparser_utils:keyget(<<"family">>, OperatingSystem)},
-        {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, OperatingSystem)},
-        {type,                  uaparser_utils:keyget(<<"device_type">>, OperatingSystem)},
-        {version,               Version},
-        {version_details,       Details}
+     {name,                  uaparser_utils:keyget(<<"name">>, OperatingSystem)},
+     {family,                uaparser_utils:keyget(<<"family">>, OperatingSystem)},
+     {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, OperatingSystem)},
+     {type,                  uaparser_utils:keyget(<<"device_type">>, OperatingSystem)},
+     {version,               Version},
+     {version_details,       Details}
     ];
 make_proplist(Browser, UserAgent, browser) ->
     {Version, Details} = get_version(Browser, UserAgent),
     [
-        {name,                  uaparser_utils:keyget(<<"name">>, Browser)},
-        {family,                uaparser_utils:keyget(<<"family">>, Browser)},
-        {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, Browser)},
-        {type,                  uaparser_utils:keyget(<<"browser_type">>, Browser)},
-        {renderer,              uaparser_utils:keyget(<<"rendering_engine">>, Browser)},
-        {version,               Version},
-        {version_details,       Details}
+     {name,                  uaparser_utils:keyget(<<"name">>, Browser)},
+     {family,                uaparser_utils:keyget(<<"family">>, Browser)},
+     {manufacturer,          uaparser_utils:keyget(<<"manufacturer">>, Browser)},
+     {type,                  uaparser_utils:keyget(<<"browser_type">>, Browser)},
+     {renderer,              uaparser_utils:keyget(<<"rendering_engine">>, Browser)},
+     {version,               Version},
+     {version_details,       Details}
     ].
 
 get_version(Item, UserAgent) ->

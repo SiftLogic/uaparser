@@ -9,3 +9,10 @@ compile:
 clean:
 	@./rebar clean
 
+# Test
+.PHONY: test
+test:
+	make eunit
+
+eunit:
+	./rebar eunit skip_deps=true
